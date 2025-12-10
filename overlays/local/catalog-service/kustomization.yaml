@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: default
+
+resources:
+  - ../../../base/catalog-service
+
+commonLabels:
+  environment: local
+
+# Local environment customizations
+replicas:
+  - name: catalog-service
+    count: 2
+
+images:
+  - name: catalog-service
+    newName: catalog-service
+    newTag: latest
+
+# Resource limits for local dev (smaller footprint)
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: catalog-service
+      spec:
+        template:
+          spec:
+            containers:
+              - name: catalog-service
+                resources:
+                  requests:
+                    memory: "128Mi"
+                    cpu: "100m"
+                  limits:
+                    memory: "256Mi"
+                    cpu: "500m"
+                env:
+                  - name: ENV
+                    value: "local"
+                  - name: LOG_LEVEL
+                    value: "debug"

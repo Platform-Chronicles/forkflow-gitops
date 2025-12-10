@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/Platform-Chronicles/forkflow-gitops.git
     targetRevision: HEAD
-    path: environments/local/catalog-service
+    path: overlays/local/catalog-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default

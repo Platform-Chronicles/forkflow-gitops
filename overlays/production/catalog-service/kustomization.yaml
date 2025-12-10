@@ -1,0 +1,60 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: production
+
+resources:
+  - ../../../base/catalog-service
+
+commonLabels:
+  environment: production
+
+# Production environment customizations
+replicas:
+  - name: catalog-service
+    count: 5
+
+images:
+  - name: catalog-service
+    newName: catalog-service
+    newTag: v0.1.0  # Pinned version, promoted from staging
+
+# Production-grade resources
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: catalog-service
+      spec:
+        template:
+          spec:
+            containers:
+              - name: catalog-service
+                resources:
+                  requests:
+                    memory: "512Mi"
+                    cpu: "500m"
+                  limits:
+                    memory: "1Gi"
+                    cpu: "2000m"
+                env:
+                  - name: ENV
+                    value: "production"
+                  - name: LOG_LEVEL
+                    value: "warn"
+                  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+                    value: "http://otel-collector.observability:4317"
+            # Production additions
+            affinity:
+              podAntiAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    podAffinityTerm:
+                      labelSelector:
+                        matchExpressions:
+                          - key: app
+                            operator: In
+                            values:
+                              - catalog-service
+                      topologyKey: kubernetes.io/hostname

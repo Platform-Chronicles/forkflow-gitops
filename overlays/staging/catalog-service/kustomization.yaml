@@ -1,0 +1,47 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: staging
+
+resources:
+  - ../../../base/catalog-service
+
+commonLabels:
+  environment: staging
+
+# Staging environment customizations
+replicas:
+  - name: catalog-service
+    count: 3
+
+images:
+  - name: catalog-service
+    newName: catalog-service
+    newTag: v0.1.0  # Specific version, not latest
+
+# Higher resources for staging (closer to production)
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: catalog-service
+      spec:
+        template:
+          spec:
+            containers:
+              - name: catalog-service
+                resources:
+                  requests:
+                    memory: "256Mi"
+                    cpu: "200m"
+                  limits:
+                    memory: "512Mi"
+                    cpu: "1000m"
+                env:
+                  - name: ENV
+                    value: "staging"
+                  - name: LOG_LEVEL
+                    value: "info"
+                  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+                    value: "http://otel-collector.observability:4317"
