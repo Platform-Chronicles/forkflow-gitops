@@ -6,3 +6,11 @@ metadata:
     name: forkflow-local
     environment: local
     app.kubernetes.io/part-of: forkflow-platform
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: observability
+  labels:
+    name: observability
+    app.kubernetes.io/part-of: forkflow-platform

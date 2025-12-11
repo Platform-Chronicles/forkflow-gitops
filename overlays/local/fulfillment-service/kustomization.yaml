@@ -43,3 +43,5 @@ patches:
                     value: "debug"
                   - name: ORDER_SERVICE_URL
                     value: "http://order-service"
+                  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+                    value: "http://jaeger.observability.svc.cluster.local:4317"

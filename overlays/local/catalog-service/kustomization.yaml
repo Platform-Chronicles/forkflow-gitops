@@ -43,3 +43,5 @@ patches:
                     value: "local"
                   - name: LOG_LEVEL
                     value: "debug"
+                  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+                    value: "http://jaeger.observability.svc.cluster.local:4317"
