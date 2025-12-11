@@ -10,15 +10,36 @@ spec:
     port: 80
     protocol: HTTP
     hostname: "argocd.local"
+    allowedRoutes:
+      namespaces:
+        from: Same
   - name: jaeger
     port: 80
     protocol: HTTP
     hostname: "jaeger.local"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            kubernetes.io/metadata.name: observability
   - name: prometheus
     port: 80
     protocol: HTTP
     hostname: "prometheus.local"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            kubernetes.io/metadata.name: observability
   - name: grafana
     port: 80
     protocol: HTTP
     hostname: "grafana.local"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            kubernetes.io/metadata.name: observability
