@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: order-service
+  name: namespaces
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/Platform-Chronicles/forkflow-gitops.git
     targetRevision: HEAD
-    path: overlays/local/order-service
+    path: base/namespaces
   destination:
     server: https://kubernetes.default.svc
     namespace: forkflow-local

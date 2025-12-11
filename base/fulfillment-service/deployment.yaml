@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fulfillment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fulfillment-service
+  template:
+    metadata:
+      labels:
+        app: fulfillment-service
+    spec:
+      containers:
+      - name: fulfillment-service
+        image: fulfillment-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8003
+        env:
+        - name: ENV
+          value: "production"
+        - name: LOG_LEVEL
+          value: "info"
+        - name: ORDER_SERVICE_URL
+          value: "http://order-service"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://localhost:4317"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8003
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8003
+          initialDelaySeconds: 5
+          periodSeconds: 10

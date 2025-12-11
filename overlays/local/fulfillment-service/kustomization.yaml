@@ -4,18 +4,18 @@ kind: Kustomization
 namespace: forkflow-local
 
 resources:
-  - ../../../base/order-service
+  - ../../../base/fulfillment-service
 
 commonLabels:
   environment: local
 
 replicas:
-  - name: order-service
+  - name: fulfillment-service
     count: 2
 
 images:
-  - name: order-service
-    newName: order-service
+  - name: fulfillment-service
+    newName: fulfillment-service
     newTag: latest
 
 patches:
@@ -23,12 +23,12 @@ patches:
       apiVersion: apps/v1
       kind: Deployment
       metadata:
-        name: order-service
+        name: fulfillment-service
       spec:
         template:
           spec:
             containers:
-              - name: order-service
+              - name: fulfillment-service
                 resources:
                   requests:
                     memory: "128Mi"
@@ -41,5 +41,5 @@ patches:
                     value: "local"
                   - name: LOG_LEVEL
                     value: "debug"
-                  - name: CATALOG_SERVICE_URL
-                    value: "http://catalog-service"
+                  - name: ORDER_SERVICE_URL
+                    value: "http://order-service"

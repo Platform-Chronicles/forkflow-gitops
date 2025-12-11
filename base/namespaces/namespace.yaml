@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: forkflow-local
+  labels:
+    name: forkflow-local
+    environment: local
+    app.kubernetes.io/part-of: forkflow-platform
