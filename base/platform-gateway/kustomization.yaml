@@ -3,9 +3,9 @@ kind: Kustomization
 
 resources:
   - gateway.yaml
-  - httproutes.yaml
+  - argocd-route.yaml
 
 commonLabels:
-  app.kubernetes.io/name: observability-gateway
+  app.kubernetes.io/name: platform-gateway
   app.kubernetes.io/component: gateway
-  app.kubernetes.io/part-of: observability
+  app.kubernetes.io/part-of: platform

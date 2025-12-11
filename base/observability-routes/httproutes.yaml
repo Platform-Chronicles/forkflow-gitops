@@ -5,7 +5,8 @@ metadata:
   namespace: observability
 spec:
   parentRefs:
-  - name: observability-gateway
+  - name: platform-gateway
+    namespace: argocd
   hostnames:
   - "jaeger.local"
   rules:
@@ -24,7 +25,8 @@ metadata:
   namespace: observability
 spec:
   parentRefs:
-  - name: observability-gateway
+  - name: platform-gateway
+    namespace: argocd
   hostnames:
   - "prometheus.local"
   rules:
@@ -43,7 +45,8 @@ metadata:
   namespace: observability
 spec:
   parentRefs:
-  - name: observability-gateway
+  - name: platform-gateway
+    namespace: argocd
   hostnames:
   - "grafana.local"
   rules:
