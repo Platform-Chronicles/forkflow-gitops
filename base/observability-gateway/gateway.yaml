@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: observability-gateway
+  namespace: observability
+spec:
+  gatewayClassName: nginx
+  listeners:
+  - name: jaeger
+    port: 80
+    protocol: HTTP
+    hostname: "jaeger.local"
+  - name: prometheus
+    port: 80
+    protocol: HTTP
+    hostname: "prometheus.local"
+  - name: grafana
+    port: 80
+    protocol: HTTP
+    hostname: "grafana.local"
